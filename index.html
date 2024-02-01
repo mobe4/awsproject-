@@ -5,6 +5,65 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>my CV</title>
+    <script>
+      function submitToAPI(e) {
+    e.preventDefault();
+    var URL = "https://clliiefiig.execute-api.us-east-1.amazonaws.com/productionemail";
+
+    var Namere = /[A-Za-z]{2,20}/;
+    if (!Namere.test($("#name-input").val())) {
+        alert("Name cannot be less than 2 characters");
+        return;
+    }
+
+    var mobilere = /[0-9]{10}/;
+    if (!mobilere.test($("#phone-input").val())) {
+        alert("Please enter a valid mobile number");
+        return;
+    }
+
+    if ($("#email-input").val() == "") {
+        alert("Please enter your email id");
+        return;
+    }
+
+    var reeamil = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,6})?$/;
+    if (!reeamil.test($("#email-input").val())) {
+        alert("Please enter a valid email address");
+        return;
+    }
+
+    var name = $("#name-input").val();
+    var phone = $("#phone-input").val();
+    var email = $("#email-input").val();
+    var desc = $("#description-input").val();
+    var data = {
+        name: name,
+        phone: phone,
+        email: email,
+        desc: desc
+    };
+
+    $.ajax({
+        type: "POST",
+        url: URL,
+        dataType: "json",
+        crossDomain: true,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+        success: function (response) {
+            // Handle success here
+            alert("Form submitted successfully!");
+            // You might want to clear the form here or redirect the user
+        },
+        error: function (xhr, status, error) {
+            // Handle errors here
+            alert("Error submitting form: " + error);
+        }
+    });
+}
+
+    </script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/aos.css?ver=1.1.0" rel="stylesheet">
